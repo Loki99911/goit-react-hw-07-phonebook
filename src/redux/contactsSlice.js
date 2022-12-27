@@ -12,7 +12,7 @@ export const contactsSlice = createSlice({
   },
   // reducers: {
   //   fetchContacts:()=>{},
-
+// ____________________________________________________________ИСПРАВИТЬ PHONE в БэкЭнде_______________________________________________________
   //   addContact: (state, action) => {
   //     const { name, number } = action.payload;
   //     if (state.find(contact => contact.name === name)) {
@@ -45,7 +45,7 @@ export const contactsSlice = createSlice({
     [addContact.fulfilled]: (state, action) => {
       state.isLoading = false;
       state.error = null;
-      state.items = action.payload;
+      state.items.push(action.payload);
     },
     [addContact.rejected]: (state, action) => {
       state.isLoading = false;
@@ -57,7 +57,7 @@ export const contactsSlice = createSlice({
     [deleteContact.fulfilled]: (state, action) => {
       state.isLoading = false;
       state.error = null;
-      state.items = action.payload;
+      state.items = state.items.filter(item => item.id !== action.payload)
     },
     [deleteContact.rejected]: (state, action) => {
       state.isLoading = false;

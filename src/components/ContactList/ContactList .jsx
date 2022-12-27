@@ -19,7 +19,6 @@ export const ContactList = () => {
     )
     }
     return [];
-      
   };
 
   return (

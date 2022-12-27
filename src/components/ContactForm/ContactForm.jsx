@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { FormBlock, FormTitle, FormInput, FormBtn } from './ContactForm.styled';
 import { addContact } from '../../redux/operations';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const ContactForm = () => {
   const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [phone, setPhone] = useState('');
+  const contacts = useSelector(state => state.contacts);
 
   const dispatch = useDispatch();
 
@@ -15,7 +16,7 @@ export const ContactForm = () => {
         setName(event.target.value);
         break;
       case 'number':
-        setNumber(event.target.value);
+        setPhone(event.target.value);
         break;
       default:
         return;
@@ -24,9 +25,12 @@ export const ContactForm = () => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    dispatch(addContact({ name, number }));
+    if (contacts.items.find(contact => contact.name === name)) {
+      return alert(`${name} is already in contacts!`);
+    }
+    dispatch(addContact({ name, phone }));
     setName('');
-    setNumber('');
+    setPhone('');
   };
 
   return (
@@ -52,12 +56,12 @@ export const ContactForm = () => {
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
           onChange={handleChange}
-          value={number}
+          value={phone}
         />
       </FormTitle>
-      <FormBtn type="submit">Add contact</FormBtn>
+      <FormBtn type="submit" disabled={contacts.isLoading}>
+        Add contact
+      </FormBtn>
     </FormBlock>
   );
 };
-
-
